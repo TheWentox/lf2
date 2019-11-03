@@ -19,6 +19,10 @@ public class PlayerAttack : MonoBehaviour
 
     public KeyCode attackKey;
 
+    public AudioClip hitSound;
+    public AudioClip hitNothing;
+    public AudioSource hitSource;
+
     void Update()
     {
         if (timeBetweenAttacks <= 0)
@@ -41,8 +45,10 @@ public class PlayerAttack : MonoBehaviour
         Collider2D enemyToDamage = Physics2D.OverlapCircle(attackPosition.position, attackRange, whatIsEnemy);
         if (enemyToDamage == null)
         {
+            hitSource.PlayOneShot(hitNothing);
             return;
         }
+        hitSource.PlayOneShot(hitSound);
         enemyToDamage.GetComponent<EnemyDestroyer>().TakeDamage(damage);
     }
 

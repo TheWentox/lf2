@@ -19,8 +19,12 @@ public class Firing : MonoBehaviour
     public int ballPoolSize = 20;
     private GameObject[] ballPool;
     private EnemyDestroyer character;
+
     public Animator animator;
     public string FireAnimationName;
+
+    public AudioClip shootSound;
+    public AudioSource shootSoundSource;
 
     void Start()
     {
@@ -81,5 +85,10 @@ public class Firing : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void PlayShootSound()
+    {
+        shootSoundSource.PlayOneShot(shootSound);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Pathfinding;
 using Input = UnityEngine.Input;
 
 public class CharacterMovemenetController : MonoBehaviour {
@@ -25,6 +26,9 @@ public class CharacterMovemenetController : MonoBehaviour {
     public Animator animator;
     private EnemyDestroyer character;
 
+    public ParticleSystem dust;
+    public GameObject gameManager;
+
     private float lastTimeWalkPressed = -1.0f;
 
     // Use this for initialization
@@ -37,6 +41,18 @@ public class CharacterMovemenetController : MonoBehaviour {
     void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, whatIsGround);
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            AIPath aiPath = GetComponent<AIPath>();
+            EnemyGraphics graphics = GetComponent<EnemyGraphics>();
+            if ( aiPath != null && graphics != null)
+            {
+                graphics.enabled = false;
+                aiPath.enabled = false;
+                graphics.transform.localScale = graphics.originalLocaleScale;
+            }
+        }
 
         if (Input.GetKey(left))
         {
@@ -76,6 +92,8 @@ public class CharacterMovemenetController : MonoBehaviour {
 
         if (Input.GetKey(jump) && isGrounded)
         {
+            gameManager.GetComponent<AchievementHandler>().NewAchievement("Up we go!");
+            CreateDust();
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
         }
 
@@ -85,8 +103,17 @@ public class CharacterMovemenetController : MonoBehaviour {
 
     private void Flip()
     {
+        CreateDust();
         facingRight = !facingRight;
 
         transform.Rotate(0f, 180f, 0f);
+    }
+
+    public void CreateDust()
+    {
+        if (isGrounded)
+        {
+           dust.Play();
+        }
     }
 }

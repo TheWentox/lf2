@@ -60,13 +60,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AchievementHandler.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\CharacterMovemenetController.cs" />
     <Compile Include="Assets\Scripts\DistanceDestroyer.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\EnemyDestroyer.cs" />
+    <Compile Include="Assets\Scripts\EnemyGraphics.cs" />
     <Compile Include="Assets\Scripts\Firing.cs" />
+    <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Parallaxing.cs" />
+    <Compile Include="Assets\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\PlayerAttack.cs" />
     <Compile Include="Assets\Scripts\RespawnController.cs" />
     <Compile Include="Assets\Scripts\Respawner.cs" />

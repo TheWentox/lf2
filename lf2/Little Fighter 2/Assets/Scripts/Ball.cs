@@ -8,7 +8,7 @@ public class Ball : MonoBehaviour
     public float ballSpeed;
     public Rigidbody2D rb;
     public float damage = 0.2f;
-    
+
     void OnEnable()
     {
         rb.velocity = transform.right * ballSpeed;

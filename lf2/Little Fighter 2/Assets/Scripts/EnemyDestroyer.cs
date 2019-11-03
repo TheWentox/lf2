@@ -7,10 +7,16 @@ public class EnemyDestroyer : MonoBehaviour
 {
     public float health = 1.0f;
     public float mana = 1.0f;
+
     public Transform healthBar;
     public Transform manaBar;
+
     public Animator animator;
     public string deathAnimation;
+
+    public ParticleSystem blood;
+
+    public GameObject gameManager;
 
     void Start()
     {
@@ -22,13 +28,20 @@ public class EnemyDestroyer : MonoBehaviour
     {
         if (mana < 1.0f)
         {
-            mana += 0.005f;
-            SetManaBar(manaBar.localScale.x + 0.005f);
+            mana += 0.001f;
+            SetManaBar(manaBar.localScale.x + 0.001f);
         }
     }
 
     public void TakeDamage(float damage)
     {
+        if (health <= 0)
+        {
+            return;
+        }
+
+        CreateBlood();
+
         if (health - damage < 0)
         {
             health = 0;
@@ -42,6 +55,7 @@ public class EnemyDestroyer : MonoBehaviour
 
         if (health <= 0)
         {
+            gameManager.GetComponent<AchievementHandler>().NewAchievement("I Smelled the flowers...");
             animator.Play(deathAnimation);
             mana = 1.0f;
             health = 1.0f;
@@ -67,5 +81,19 @@ public class EnemyDestroyer : MonoBehaviour
             col.gameObject.SetActive(false);
             this.gameObject.SetActive(false);
         }
+    }
+
+    public void RespawnFix()
+    {
+        mana = 1.0f;
+        health = 1.0f;
+        SetManaBar(1.0f);
+        SetHealthBar(1.0f);
+    }
+
+    public void CreateBlood()
+    {
+        gameManager.GetComponent<AchievementHandler>().NewAchievement("Ouch!");
+        blood.Play();
     }
 }
