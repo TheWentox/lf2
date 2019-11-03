@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private int health = 100;
-    private int mana = 100;
-    public int damage = 10;
+    public float damage = 0.2f;
 
     private float timeBetweenAttacks = 1.0f;
     public float startTimeBetweenAttacks = 0.3f;
@@ -20,7 +18,6 @@ public class PlayerAttack : MonoBehaviour
     public Animator animator;
 
     public KeyCode attackKey;
-    public GameObject opponent;
 
     void Update()
     {
@@ -28,9 +25,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (Input.GetKey(attackKey))
             {
-                animator.SetTrigger(attackName);
-                Collider2D enemyToDamage = Physics2D.OverlapCircle(attackPosition.position, attackRange, whatIsEnemy);
-                //enemyToDamage.GetComponent</**/>().TakeDamage(damage);
+                animator.Play(attackName);
             }
 
             timeBetweenAttacks = startTimeBetweenAttacks;
@@ -39,6 +34,16 @@ public class PlayerAttack : MonoBehaviour
         {
             timeBetweenAttacks -= Time.deltaTime;
         }
+    }
+
+    void Attack()
+    {
+        Collider2D enemyToDamage = Physics2D.OverlapCircle(attackPosition.position, attackRange, whatIsEnemy);
+        if (enemyToDamage == null)
+        {
+            return;
+        }
+        enemyToDamage.GetComponent<EnemyDestroyer>().TakeDamage(damage);
     }
 
     void OnDrawGizmosSelected()

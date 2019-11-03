@@ -7,7 +7,6 @@ public class Respawner : MonoBehaviour
     RespawnController rc;
 
     private Vector3 oldPosition;
-    private bool oldActiveness;
     private Vector3 oldScale;
 
     // Start is called before the first frame update
@@ -15,18 +14,20 @@ public class Respawner : MonoBehaviour
     {
         rc = GameObject.FindGameObjectWithTag("GameController").
                  GetComponent<RespawnController>();
-
-        rc.register(this);
+        rc.Register(this);
 
         oldPosition = this.GetComponent<Transform>().position;
-        oldActiveness = this.gameObject.activeSelf;
         oldScale = this.GetComponent<Transform>().localScale;
     }
 
-    public void respawn()
+    public void Respawn()
     {
+        Debug.Log(this + "RESPAWNING");
         this.GetComponent<Transform>().position = oldPosition;
-        this.gameObject.SetActive(oldActiveness);
         this.GetComponent<Transform>().localScale = oldScale;
+        //this.GetComponent<EnemyDestroyer>().mana = 1.0f;
+        //this.GetComponent<EnemyDestroyer>().SetManaBar(1.0f);
+        //this.GetComponent<EnemyDestroyer>().health = 1.0f;
+        //this.GetComponent<EnemyDestroyer>().SetHealthBar(1.0f);
     }
 }

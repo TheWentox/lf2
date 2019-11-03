@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Input = UnityEngine.Input;
 
 public class CharacterMovemenetController : MonoBehaviour {
 
@@ -15,10 +16,6 @@ public class CharacterMovemenetController : MonoBehaviour {
     public KeyCode left;
     public KeyCode right;
     public KeyCode jump;
-    public KeyCode fire;
-
-    public Transform firePoint;
-    public GameObject ballPrefab;
 
     public Transform groundCheckPoint;
     public float groundCheckRadius;
@@ -26,11 +23,15 @@ public class CharacterMovemenetController : MonoBehaviour {
 
     public bool isGrounded;
     public Animator animator;
+    private EnemyDestroyer character;
+
+    private float lastTimeWalkPressed = -1.0f;
 
     // Use this for initialization
     void Start () {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        character = GetComponent<EnemyDestroyer>();
     }
     
     void Update()
@@ -43,7 +44,7 @@ public class CharacterMovemenetController : MonoBehaviour {
             {
                 Flip();
             }
-            rigidBody.velocity = new Vector2(-walkSpeed, rigidBody.velocity.y);
+            rigidBody.velocity = rigidBody.velocity.x < -1.5f ? new Vector2(-runSpeed, rigidBody.velocity.y) : new Vector2(-walkSpeed, rigidBody.velocity.y);
         }
         if (Input.GetKey(right))
         {
@@ -51,18 +52,31 @@ public class CharacterMovemenetController : MonoBehaviour {
             {
                 Flip();
             }
-            rigidBody.velocity = new Vector2(walkSpeed, rigidBody.velocity.y);
+            rigidBody.velocity = rigidBody.velocity.x > 1.5f ? new Vector2(runSpeed, rigidBody.velocity.y) : new Vector2(walkSpeed, rigidBody.velocity.y);
+        }
+
+        if (Input.GetKeyDown(left))
+        {
+            if (facingRight)
+            {
+                Flip();
+            }
+            rigidBody.velocity = Time.time - lastTimeWalkPressed < 0.2f ? new Vector2(-runSpeed, rigidBody.velocity.y) : new Vector2(-walkSpeed, rigidBody.velocity.y);
+            lastTimeWalkPressed = Time.time;
+        }
+        if (Input.GetKeyDown(right))
+        {
+            if (!facingRight)
+            {
+                Flip();
+            }
+            rigidBody.velocity = Time.time - lastTimeWalkPressed < 0.2f ? new Vector2(runSpeed, rigidBody.velocity.y) : new Vector2(walkSpeed, rigidBody.velocity.y);
+            lastTimeWalkPressed = Time.time;
         }
 
         if (Input.GetKey(jump) && isGrounded)
         {
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpForce);
-        }
-
-        if (Input.GetKey(fire))
-        {
-            animator.SetTrigger("FreezeShoot");
-            Instantiate(ballPrefab, firePoint.position, firePoint.rotation);
         }
 
         animator.SetFloat("Speed", Mathf.Abs(rigidBody.velocity.x));

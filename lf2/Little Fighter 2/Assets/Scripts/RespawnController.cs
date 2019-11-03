@@ -11,19 +11,17 @@ public class RespawnController : MonoBehaviour
         respawnableObjects = new List<Respawner>();
     }
 
-    public void register(Respawner obj)
+    public void Register(Respawner obj)
     {
         respawnableObjects.Add(obj);
-
-
     }
 
-    public void respawn()
+    public void Respawn()
     {
         Debug.Log("Repawning....");
         foreach(Respawner obj in respawnableObjects)
         {
-            obj.respawn();
+            obj.Respawn();
         }
     }
 }

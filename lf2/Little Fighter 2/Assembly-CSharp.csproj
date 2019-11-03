@@ -62,8 +62,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Ball.cs" />
     <Compile Include="Assets\Scripts\CharacterMovemenetController.cs" />
+    <Compile Include="Assets\Scripts\DistanceDestroyer.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\EnemyDestroyer.cs" />
+    <Compile Include="Assets\Scripts\Firing.cs" />
     <Compile Include="Assets\Scripts\Parallaxing.cs" />
     <Compile Include="Assets\Scripts\PlayerAttack.cs" />
     <Compile Include="Assets\Scripts\RespawnController.cs" />
